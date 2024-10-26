@@ -33,19 +33,19 @@
 
 Пример команды для запуска обучения:
 
-yolo train data=/path/to/data.yaml model=yolov8n.pt epochs=100 imgsz=640 batch=16
+```yolo train data=/path/to/data.yaml model=yolov8n.pt epochs=100 imgsz=640 batch=16```
 
 
 📥 Установка
 Для запуска проекта на локальном компьютере выполните следующие шаги:
 
 Клонируйте Репозиторий:
-git clone https://github.com/yourusername/yourrepository.git
+```git clone https://github.com/yourusername/yourrepository.git```
 
-cd yourrepository
+```cd yourrepository```
 
 Установите Зависимости:
-pip install ultralytics opencv-python
+```pip install ultralytics opencv-python```
 
 Добавьте Данные:
 Разместите данные видео в папке /data или укажите путь в коде.
