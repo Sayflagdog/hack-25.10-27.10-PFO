@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 14
+names: ['Bunker', 'Cargo', 'Cistern', 'ClassCarriage', 'Dumpcar', 'Fitting platorm', 'Halfcarriage', 'Laying crane', 'MTSO', 'PRSM Machine', 'Platform PPK', 'SMMachine', 'Sapsan', 'USOPlatform']
+
+roboflow:
+  workspace: rzhd-modkq
+  project: rzhdtrains
+  version: 3
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/rzhd-modkq/rzhdtrains/dataset/3
