@@ -67,5 +67,6 @@ npm start
 Занятости путей.
 Возможных нарушениях безопасности и несанкционированном проникновении.
 
-
+ссылка на zip (10:41 27/10/24)
+https://drive.google.com/file/d/11GPwfX6q8YzV1BDn7ulf3p4jf1j_dCiq/view?usp=sharing
 
