@@ -1,7 +1,7 @@
 from flask import Flask, send_file, request, jsonify, send_from_directory
 from flask_cors import CORS  # Импортируйте CORS
 import os
-from sources.predict import predict
+from sources.predict import predict, addedPredict
 from ultralytics import YOLO
 
 app = Flask(__name__)
@@ -15,6 +15,59 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 model = YOLO(MODEL_PATH)
 
+
+
+@app.route('/show-image')
+def show_image():
+    print("Showing image...")
+    file_path = os.path.join(RESOURCES_FOLDER, 'output.jpg')
+    return send_file(file_path, mimetype='image/jpeg')
+
+@app.route('/results/<filename>')
+def get_result(filename):
+    print(f"Fetching result for: {filename}")
+    return send_from_directory(PREDICTION_FOLDER, filename)
+
+
+@app.route('/upload', methods=['POST'])
+def upload_image():
+    print("Received upload request")
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+
+    x1 = request.form.get('x1')
+    x2 = request.form.get('x2')
+    y1 = request.form.get('y1')
+    y2 = request.form.get('y2')
+
+    roi = [int(x1), int(y1), int(x2), int(y2)] if all([x1, x2, y1, y2]) else None
+
+    result_path = os.path.join(PREDICTION_FOLDER, f'predicted_{file.filename}')
+
+    save_path, class_counts = addedPredict(file_path, result_path, model, printMode=0, roi=roi)
+    print(f"Prediction saved to {save_path}")
+
+    return jsonify({'result_image': f'/results/predicted_{file.filename}', 'class_counts': class_counts}), 200
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
+
+"""
 @app.route('/upload', methods=['POST'])
 def upload_image():
     print("Received upload request")
@@ -34,23 +87,8 @@ def upload_image():
     predict(file_path, result_path, model)
     print(f"Prediction saved to {result_path}")
 
-    return jsonify({'result_image': f'/results/predicted_{file.filename}'}), 200
-
-
-@app.route('/show-image')
-def show_image():
-    print("Showing image...")
-    file_path = os.path.join(RESOURCES_FOLDER, 'output.jpg')
-    return send_file(file_path, mimetype='image/jpeg')
-
-@app.route('/results/<filename>')
-def get_result(filename):
-    print(f"Fetching result for: {filename}")
-    return send_from_directory(PREDICTION_FOLDER, filename)
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
+    return jsonify({'result_image': f'/results/predicted_{file.filename}'}), 200 
+"""
 
 
 
